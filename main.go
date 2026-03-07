@@ -10,11 +10,15 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/skip2/go-qrcode"
 )
 
 var tpl *template.Template
 var records [][]string
 var redemption_data [][]string
+var png []byte
+var err error
 
 func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
@@ -53,6 +57,7 @@ func main() {
 	http.HandleFunc("/admin", adminHandler)
 	http.HandleFunc("/getId", getIdHandler)
 	http.HandleFunc("/getQR", getQRHandler)
+	http.HandleFunc("/downloadQR", downloadQRHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -95,10 +100,22 @@ func getIdHandler(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "result.html", result)
 }
 
-// func getQRHandler(w http.ResponseWriter, r *http.Request) {
-// 	queryId := r.FormValue("id")
+func getQRHandler(w http.ResponseWriter, r *http.Request) {
+	queryId := r.FormValue("id")
+	png, err = qrcode.Encode(queryId, qrcode.Medium, 256)
+	if err != nil {
+		http.Error(w, "QR generation failed", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "image/png")
+	w.Write(png)
+}
 
-// }
+func downloadQRHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "image/png")
+	w.Header().Set("Content-Disposition", "attachment; filename=staff_qr.png")
+	w.Write(png)
+}
 
 func addToCSV(fileName string, record []string) error {
 	file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
@@ -120,4 +137,8 @@ func addToCSV(fileName string, record []string) error {
 	}
 
 	return nil
+}
+
+func generateQR(staffId string) error {
+	return qrcode.WriteFile(staffId, qrcode.Medium, 256, "staff_qr.png")
 }

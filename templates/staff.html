@@ -2,11 +2,31 @@
 <html>
 {{template "Header"}}
 <body>
-    <h1>This is the staff page.</h1>
-    <form action="/getQR" method="GET">
-        <label for="idField">Staff ID:</label>
-        <input type="text" name="id" id="idField" placeholder="Enter ID" required>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="parent">
+        <h1>This is the staff page.</h1>
+        <form onsubmit="generateQR(); return false;">
+            <label for="idField">Enter your Staff ID:</label>
+            <input type="text" name="id" id="idField" placeholder="Enter ID" required>
+            <input type="submit" value="Generate QR">
+        </form>
+        <br><br>
+        <a href="/downloadQR">
+        <img id="qrImage" style="display:none; width:200px;">
+        </a>
+        <script>
+            function generateQR() {
+                const id = document.getElementById("idField").value;
+                const qr = document.getElementById("qrImage");
+
+                if (!id.trim()) {
+                    alert("Please enter a Staff ID");
+                    return;
+                }
+
+                qr.src = "/getQR?id=" + encodeURIComponent(id);
+                qr.style.display = "block";
+            }
+        </script>
+    </div>
 </body>
 </html>
