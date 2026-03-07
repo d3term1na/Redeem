@@ -1,0 +1,35 @@
+{{define "Header"}}
+<head>
+    <meta charset="UTF-8">
+    <title>Redeem</title>
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="/static/index.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<header class="menu sticky">
+    <h1>Redeem</h1>
+    <input type="radio" name="menu" id="menu-on">
+    <label for="menu-on" class="material-icons hamburger">menu</label>
+    <input type="radio" name="menu" id="menu-off">
+    <div class="sliding-panel">
+        <label for="menu-off" class="material-icons close">close</label>
+        <h3>Side Panel</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Redeemed At</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{range .}}
+                <tr>
+                    <td>{{index . 0}}</td>
+                    <td>{{index . 1}}</td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </div>
+</header>
+{{end}}

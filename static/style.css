@@ -1,0 +1,100 @@
+header {
+    background-color: darkslategrey;
+    color: white;
+    display: flex;
+}
+
+.menu{
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.menu h1{
+    padding-left: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.menu label{
+    cursor: pointer;
+    font-size: 30px;
+    padding-right: 30px;
+}
+
+#menu-on{
+    display:none;
+}
+
+#menu-on:checked ~ .sliding-panel {
+    transform: translateX(0);
+}
+
+#menu-off{
+    display:none;
+}
+
+#menu-off:checked ~ .sliding-panel {
+    transform: translateX(100%);
+}
+
+.sliding-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 100%;
+    background-color: white;
+    color: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    padding: 20px;
+}
+
+.table {
+    border-collapse: collapse;
+    min-width: 90%;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.table thead tr {
+    background-color: darkslategrey;
+    color: #ffffff;
+    text-align: left;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+}
+.table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    color: black;
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.sliding-panel label{
+    cursor: pointer;
+    font-size: 30px;
+    padding-right: 30px;
+    color:black;
+}
+
+.sticky{
+    position: sticky;
+    top: 0;
+}
+
+body {
+    margin: 0px;
+}
+

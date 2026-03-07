@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Redeem</title>
-</head>
+{{template "Header" .}}
 <body>
-    <form action="/getId" method="GET">
-        <label for="idField">Staff ID:</label>
-        <input type="text" name="id" id="idField" placeholder="Enter ID" required>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="parent">
+        <h1>Hi, what would you like to do today?</h1>
+        <div class="cards-container">
+            <a href="admin" class="card card-link">
+                Card 1
+            </a>
+            <a href="staff" class="card card-link">
+                Card 2
+            </a>
+        </div>
+    </div>
 </body>
 </html>
