@@ -2,11 +2,49 @@
 <html>
 {{template "Header"}}
 <body>
-    <h1>This is the admin page.</h1>
-    <form action="/getId" method="GET">
-        <label for="idField">Staff ID:</label>
-        <input type="text" name="id" id="idField" placeholder="Enter ID" required>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="parent">
+        <h1>This is the admin page.</h1>
+        <form action="/getId" method="GET">
+            <label for="idField">Staff ID:</label>
+            <input type="text" name="id" id="idField" placeholder="Enter ID" required>
+            <input type="submit" value="Submit">
+        </form>
+        <form id="qrForm" action="/decodeQR" method="POST" enctype="multipart/form-data">
+            <div class="dropDiv" id="dropDiv">
+                <span class="dropFiles">Drop file here or click to upload</span>
+                <input type="file" name="dropQR" id="dropQR" accept="image/*" hidden>
+            </div>
+        </form>
+        <script>
+            const dropZone = document.getElementById("dropDiv");
+            const fileInput = document.getElementById("dropQR");
+
+            dropZone.addEventListener("click", () => {
+                fileInput.click();
+            });
+
+            dropZone.addEventListener("dragover", e => {
+                e.preventDefault();
+                dropZone.classList.add("dragover");
+            });
+
+            dropZone.addEventListener("dragleave", () => {
+                dropZone.classList.remove("dragover");
+            });
+
+            dropZone.addEventListener("drop", e => {
+                e.preventDefault();
+
+                const file = e.dataTransfer.files[0];
+                fileInput.files = e.dataTransfer.files;
+
+                document.getElementById("qrForm").submit();
+            });
+
+            fileInput.addEventListener("change", () => {
+                document.getElementById("qrForm").submit();
+            });
+        </script>
+    </div>
 </body>
 </html>

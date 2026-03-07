@@ -11,7 +11,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/skip2/go-qrcode"
+	qrcode "github.com/skip2/go-qrcode"
+	qrdecode "github.com/tuotoo/qrcode"
 )
 
 var tpl *template.Template
@@ -58,6 +59,7 @@ func main() {
 	http.HandleFunc("/getId", getIdHandler)
 	http.HandleFunc("/getQR", getQRHandler)
 	http.HandleFunc("/downloadQR", downloadQRHandler)
+	http.HandleFunc("/decodeQR", decodeQRHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -117,6 +119,31 @@ func downloadQRHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(png)
 }
 
+func decodeQRHandler(w http.ResponseWriter, r *http.Request) {
+
+	file, _, err := r.FormFile("dropQR")
+	if err != nil {
+		http.Error(w, "Upload failed", 400)
+		return
+	}
+	defer file.Close()
+
+	tmp, _ := os.CreateTemp("", "qr*.png")
+	defer os.Remove(tmp.Name())
+
+	io.Copy(tmp, file)
+
+	qrFile, _ := os.Open(tmp.Name())
+
+	result, err := qrdecode.Decode(qrFile)
+	if err != nil {
+		http.Error(w, "Decode failed", 400)
+		return
+	}
+
+	w.Write([]byte("Decoded QR: " + result.Content))
+}
+
 func addToCSV(fileName string, record []string) error {
 	file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
@@ -137,8 +164,4 @@ func addToCSV(fileName string, record []string) error {
 	}
 
 	return nil
-}
-
-func generateQR(staffId string) error {
-	return qrcode.WriteFile(staffId, qrcode.Medium, 256, "staff_qr.png")
 }
