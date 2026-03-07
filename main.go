@@ -20,6 +20,7 @@ var records [][]string
 var redemption_data [][]string
 var png []byte
 var err error
+var staffID string
 
 func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
@@ -60,6 +61,7 @@ func main() {
 	http.HandleFunc("/getQR", getQRHandler)
 	http.HandleFunc("/downloadQR", downloadQRHandler)
 	http.HandleFunc("/decodeQR", decodeQRHandler)
+	http.HandleFunc("/result", resultHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -76,30 +78,13 @@ func adminHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getIdHandler(w http.ResponseWriter, r *http.Request) {
-	queryId := r.FormValue("id")
-	team_name := ""
-	for _, record := range records {
-		if queryId == record[0] {
-			team_name = record[1]
-			break
-		}
-	}
-	result := true
-	for _, row := range redemption_data {
-		if row[0] == team_name {
-			result = false
-		}
-	}
-	if result {
-		t := time.Now()
-		millis_val := t.UnixMilli()
-		millis_str := strconv.Itoa(int(millis_val))
-		redemption_data = append(redemption_data, []string{team_name, millis_str})
-		if err := addToCSV("redemption_data.csv", []string{team_name, millis_str}); err != nil {
-			log.Fatalf("Error appending to CSV: %v", err)
-		}
-	}
-	tpl.ExecuteTemplate(w, "result.html", result)
+	staffID = r.FormValue("id")
+	http.Redirect(
+		w,
+		r,
+		"/result",
+		http.StatusSeeOther,
+	)
 }
 
 func getQRHandler(w http.ResponseWriter, r *http.Request) {
@@ -141,7 +126,40 @@ func decodeQRHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Decoded QR: " + result.Content))
+	// w.Write([]byte("Decoded QR: " + result.Content))
+	staffID = result.Content
+	http.Redirect(
+		w,
+		r,
+		"/result",
+		http.StatusSeeOther,
+	)
+}
+
+func resultHandler(w http.ResponseWriter, r *http.Request) {
+	team_name := ""
+	for _, record := range records {
+		if staffID == record[0] {
+			team_name = record[1]
+			break
+		}
+	}
+	result := true
+	for _, row := range redemption_data {
+		if row[0] == team_name {
+			result = false
+		}
+	}
+	if result {
+		t := time.Now()
+		millis_val := t.UnixMilli()
+		millis_str := strconv.Itoa(int(millis_val))
+		redemption_data = append(redemption_data, []string{team_name, millis_str})
+		if err := addToCSV("redemption_data.csv", []string{team_name, millis_str}); err != nil {
+			log.Fatalf("Error appending to CSV: %v", err)
+		}
+	}
+	tpl.ExecuteTemplate(w, "result.html", result)
 }
 
 func addToCSV(fileName string, record []string) error {
