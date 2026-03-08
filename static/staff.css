@@ -68,7 +68,6 @@
     transition:0.2s;
 }
 
-/* when focused or typed */
 .floating-input input:focus + label,
 .floating-input input:not(:placeholder-shown) + label{
     top:-4px;
@@ -77,7 +76,6 @@
     z-index: 1111;
 }
 
-/* highlight border */
 .floating-input input:focus{
     border-color:rgb(37, 61, 61);
 }

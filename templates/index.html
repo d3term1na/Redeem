@@ -5,11 +5,28 @@
     <div class="parent">
         <h1>Hi, what would you like to do?</h1>
         <div class="cards-container">
-            <a href="admin" class="card card-link">
-                Card 1
-            </a>
+            <div class="card">
+                <p>I'm an admin and I'm here to facilitate gifts redemption.</p>
+                <form onsubmit="admin(); return false;">
+                    <div class="floating-input-admin">
+                        <input type="text" name="id" id="idField" placeholder=" " required>
+                        <label for="idField">Password:</label>
+                    </div>
+                    <input type="submit" class="btn-soft" value="Enter">
+                </form>
+                <script>
+                    function admin() {
+                        const id = document.getElementById("idField").value;
+                        if (id != "1234") {
+                            alert("Incorrect Password");
+                            return;
+                        }
+                        window.location.href = "/admin";
+                    }
+                </script>
+            </div>
             <a href="staff" class="card card-link">
-                Card 2
+                <p>I'm a staff and I'm here to get my QR code.</p>
             </a>
         </div>
     </div>
