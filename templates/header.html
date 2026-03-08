@@ -9,8 +9,10 @@
     <link href="/static/staff.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<header class="menu sticky">
-    <h1>Redeem</h1>
+<header class="menu">
+    <a href="/" class="header-link">
+        <h1>Redeem</h1>
+    </a>
     {{if .}}
     <input type="radio" name="menu" id="menu-on">
     <label for="menu-on" class="material-icons hamburger">menu</label>
@@ -22,14 +24,26 @@
             <thead>
                 <tr>
                     <th>Team</th>
+                    <th>Redeemed</th>
                     <th>Redeemed At</th>
                 </tr>
             </thead>
             <tbody>
             {{range .}}
                 <tr>
-                    <td>{{index . 0}}</td>
-                    <td>{{index . 1}}</td>
+                    <td>{{.Name}}</td>
+                    <td>{{if.Redeemed}}
+                            <span class="tick">✓</span>
+                        {{else}}
+                            <span class="cross">❌</span>
+                        {{end}}
+                    </td>
+                    <td>{{if .RedeemedAt}}
+                            {{.RedeemedAt.Format "2006-01-02 15:04:05"}}
+                        {{else}}
+                            -
+                        {{end}}
+                    </td>
                 </tr>
             {{end}}
             </tbody>

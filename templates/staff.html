@@ -3,32 +3,37 @@
 {{template "Header"}}
 <body>
     <div class="parent">
-        <h1>Enter your ID below to obtain your QR code.</h1>
-        <form onsubmit="generateQR(); return false;">
-            <div class="floating-input">
-                <input type="text" name="id" id="idField" placeholder=" " required>
-                <label for="idField">Staff ID:</label>
+        <div class="qr-card">
+            <div class="qr-left">
+                <h1>Enter your ID below to obtain your QR code.</h1>
+                <form onsubmit="generateQR(); return false;">
+                    <div class="floating-input">
+                        <input type="text" name="id" id="idField" placeholder=" " required>
+                        <label for="idField">Staff ID:</label>
+                    </div>
+                    <input type="submit" class="btn-soft" value="Generate QR">
+                </form>
             </div>
-            <input type="submit" value="Generate QR">
-        </form>
-        <br><br>
-        <a href="/downloadQR">
-        <img id="qrImage" style="display:none; width:200px;">
-        </a>
-        <script>
-            function generateQR() {
-                const id = document.getElementById("idField").value;
-                const qr = document.getElementById("qrImage");
+            <div class="qr-right">
+                <a href="/downloadQR">
+                    <img id="qrImage" style="display:none; width:200px;">
+                </a>
+                <script>
+                    function generateQR() {
+                        const id = document.getElementById("idField").value;
+                        const qr = document.getElementById("qrImage");
 
-                if (!id.trim()) {
-                    alert("Please enter a Staff ID");
-                    return;
-                }
+                        if (!id.trim()) {
+                            alert("Please enter a Staff ID");
+                            return;
+                        }
 
-                qr.src = "/getQR?id=" + encodeURIComponent(id);
-                qr.style.display = "block";
-            }
-        </script>
+                        qr.src = "/getQR?id=" + encodeURIComponent(id);
+                        qr.style.display = "block";
+                    }
+                </script>
+            </div>
+        </div>
     </div>
 </body>
 </html>

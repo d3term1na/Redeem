@@ -1,7 +1,12 @@
 header {
     background-color: darkslategrey;
     color: white;
-    display: flex;
+    display: flex;   
+}
+
+.header-link {
+    text-decoration: none;
+    color: inherit;
 }
 
 .menu{
@@ -89,12 +94,18 @@ header {
     color:black;
 }
 
-.sticky{
-    position: sticky;
-    top: 0;
+.tick {
+    color: green;
+    font-weight: bold;
 }
 
-body {
-    margin: 0px;
+.cross {
+    color: red;
+    font-weight: bold;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
 }
 

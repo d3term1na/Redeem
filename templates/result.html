@@ -3,17 +3,26 @@
 {{template "Header"}}
 <body>
     <div class="parent">
-    {{if .}}
-        <h1>Gift redeemed!</h1>
-        <video autoplay muted playsinline width="400">
-            <source src="/static/gift.mp4" type="video/mp4">
-        </video>
-        <p>Gift is successfully redeemed by.</p>
-    {{else}}
-        <h1>Sorry.</h1>
-        <img src="/static/cross.png" alt="Failure" width="400">
-        <p>Gift has already been redeemed by.</p>
-    {{end}}
+        {{if .Redeemed}}
+            <h1>Sorry.</h1>
+            <img src="/static/cross.png" alt="Failure" width="400">
+            <p class="result-message">
+                {{if .Valid}}
+                    Gift has already been redeemed by {{.Team}}.
+                {{else}}
+                    Please enter a valid staff ID.
+                {{end}}
+            </p>
+        {{else}}
+            <h1>Gift redeemed!</h1>
+            <video autoplay muted playsinline width="400">
+                <source src="/static/gift.mp4" type="video/mp4">
+            </video>
+            <p class="result-message">Gift is successfully redeemed by {{.Team}}.</p>
+        {{end}}
+        <button type="button" class="btn-soft" onclick="window.location.href='/admin'">
+            Go back to Admin
+        </button>
     </div>
 </body>
 </html>
