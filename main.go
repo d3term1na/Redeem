@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/csv"
-	"fmt"
 	"html/template"
 	"io"
 	"log"
@@ -85,35 +84,9 @@ func initDB() {
 
 func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	initDB()
 
-	// file, _ := os.Open("redeem_sample.csv")
-	// defer file.Close()
-	// records, _ = csv.NewReader(file).ReadAll()
-	// records = records[1:]
-
-	// file, _ = os.Open("redemption_data.csv")
-	// defer file.Close()
-	// reader := csv.NewReader(file)
-	// reader.Read()
-	// for {
-	// 	row, err := reader.Read()
-	// 	if err != nil {
-	// 		if err == io.EOF {
-	// 			break
-	// 		}
-	// 		log.Fatalf("Error while reading CSV file: %s", err)
-	// 	}
-
-	// 	timestamp, err := strconv.ParseInt(row[1], 10, 64)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// 	t := time.UnixMilli(timestamp)
-	// 	formatted := t.Local().Format("2006-01-02 15:04:05")
-	// 	redemption_data = append(redemption_data, []string{row[0], formatted})
-	// }
-	// fmt.Println(redemption_data[0][0])
 	tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 	http.HandleFunc("/", indexHandler)
@@ -218,7 +191,6 @@ func decodeQRHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// w.Write([]byte("Decoded QR: " + result.Content))
 	staffID = result.Content
 	http.Redirect(
 		w,
@@ -259,7 +231,7 @@ func resultHandler(w http.ResponseWriter, r *http.Request) {
 			_, err1 := DB.Exec(
 				"UPDATE teams SET redeemed = $1, redeemed_at = $2 WHERE team_name = $3",
 				true,
-				time.Now().UnixMilli(), // BIGINT milliseconds
+				time.Now().UnixMilli(),
 				team_name,
 			)
 			if err1 != nil {
@@ -271,26 +243,4 @@ func resultHandler(w http.ResponseWriter, r *http.Request) {
 	res.Redeemed = redeemed
 	res.Team = team_name
 	tpl.ExecuteTemplate(w, "result.html", res)
-}
-
-func addToCSV(fileName string, record []string) error {
-	file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		return fmt.Errorf("Failed to open file: %w", err)
-	}
-
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	err = writer.Write(record)
-	if err != nil {
-		return fmt.Errorf("Failed to write record: %w", err)
-	}
-
-	writer.Flush()
-	if err = writer.Error(); err != nil {
-		return fmt.Errorf("Failed to flush data: %w", err)
-	}
-
-	return nil
 }
