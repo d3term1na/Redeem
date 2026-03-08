@@ -1,3 +1,5 @@
+# Redeem
+
 Redeem is a 2-day take-home technical assessment for my GovTech internship application, namely 'Software Engineer : GovWallet'.              
 To run the code locally, the below packages need to be installed:            
 - github.com/google/uuid v1.3.0
