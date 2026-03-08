@@ -1,0 +1,75 @@
+/* .input-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.input-group label{
+    margin-bottom:6px;
+    font-weight:600;
+    color:#333;
+    font-size:20px;
+}
+
+.input-group input{
+    padding:10px 12px;
+    border:2px solid #ccc;
+    border-radius:6px;
+    font-size:20px;
+    transition:0.2s;
+}
+
+.input-group input:focus{
+    outline:none;
+    border-color:darkslategrey;
+    box-shadow:0 0 5px rgba(47,79,79,0.4);
+}
+
+.input-group input:hover{
+    border-color:#888;
+} */
+
+.floating-input{
+    position:relative;
+    width:280px;
+    margin:20px 0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.floating-input input{
+    width:100%;
+    padding:14px 12px;
+    border:2px solid #ccc;
+    border-radius:6px;
+    font-size:20px;
+    outline:none;
+    transition:0.2s;
+}
+
+.floating-input label{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    background:white;
+    padding:0 4px;
+    color:#888;
+    font-size:20px;
+    pointer-events:none;
+    transition:0.2s;
+}
+
+/* when focused or typed */
+.floating-input input:focus + label,
+.floating-input input:not(:placeholder-shown) + label{
+    top:-4px;
+    font-size:12px;
+    color:darkslategrey;
+    z-index: 1111;
+}
+
+/* highlight border */
+.floating-input input:focus{
+    border-color:darkslategrey;
+}

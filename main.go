@@ -66,7 +66,7 @@ func main() {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tpl.ExecuteTemplate(w, "index.html", redemption_data)
+	tpl.ExecuteTemplate(w, "index.html", nil)
 }
 
 func staffHandler(w http.ResponseWriter, r *http.Request) {
@@ -74,7 +74,7 @@ func staffHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminHandler(w http.ResponseWriter, r *http.Request) {
-	tpl.ExecuteTemplate(w, "admin.html", nil)
+	tpl.ExecuteTemplate(w, "admin.html", redemption_data)
 }
 
 func getIdHandler(w http.ResponseWriter, r *http.Request) {
@@ -152,9 +152,10 @@ func resultHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if result {
 		t := time.Now()
+		formatted := t.Local().Format("2006-01-02 15:04:05")
 		millis_val := t.UnixMilli()
 		millis_str := strconv.Itoa(int(millis_val))
-		redemption_data = append(redemption_data, []string{team_name, millis_str})
+		redemption_data = append(redemption_data, []string{team_name, formatted})
 		if err := addToCSV("redemption_data.csv", []string{team_name, millis_str}); err != nil {
 			log.Fatalf("Error appending to CSV: %v", err)
 		}

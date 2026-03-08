@@ -3,10 +3,12 @@
 {{template "Header"}}
 <body>
     <div class="parent">
-        <h1>This is the staff page.</h1>
+        <h1>Enter your ID below to obtain your QR code.</h1>
         <form onsubmit="generateQR(); return false;">
-            <label for="idField">Enter your Staff ID:</label>
-            <input type="text" name="id" id="idField" placeholder="Enter ID" required>
+            <div class="floating-input">
+                <input type="text" name="id" id="idField" placeholder=" " required>
+                <label for="idField">Staff ID:</label>
+            </div>
             <input type="submit" value="Generate QR">
         </form>
         <br><br>

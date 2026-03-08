@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Redeem</title>
-</head>
+{{template "Header"}}
 <body>
+    <div class="parent">
     {{if .}}
         <h1>Gift redeemed!</h1>
+        <video autoplay muted playsinline width="400">
+            <source src="/static/gift.mp4" type="video/mp4">
+        </video>
+        <p>Gift is successfully redeemed by.</p>
     {{else}}
-        <h1>Gift has already been redeemed.</h1>
+        <h1>Sorry.</h1>
+        <img src="/static/cross.png" alt="Failure" width="400">
+        <p>Gift has already been redeemed by.</p>
     {{end}}
+    </div>
 </body>
 </html>
